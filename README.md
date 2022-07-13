@@ -43,3 +43,7 @@ const fbxModels = {
 }
 ```
 - Here, `folderName`, `fileName.fbx` needs to be replaced with the folder name and name of the `.fbx` file for the model that has to be added. `modelName` is **not important** and just needs to be any appropriate name.
+
+## Controls
+- `left click` - Drag to pan camera
+- `right click` - Rotate camera
