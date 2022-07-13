@@ -2,10 +2,12 @@ import './style.css'
 
 import * as THREE from 'three';
 import { scene, camera } from './src/scene';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { MapControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 let controls;
+
+const stats = document.getElementById('stats');
 
 function onWindowResize() {
   let width = window.innerWidth / 100;
@@ -27,7 +29,7 @@ async function init() {
   document.body.appendChild(renderer.domElement);
 
   // add orbit controls
-  controls = new OrbitControls(camera.camera, renderer.domElement);
+  controls = new MapControls(camera.camera, renderer.domElement);
   
   // add ambient light 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -52,6 +54,14 @@ async function init() {
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
+  // console.log(renderer.info);
+  // add the renderer.info stats to the page
+  stats.innerHTML = `
+    <div>
+      <p>Draw Calls: ${renderer.info.render.calls}</p>
+      <p>Triangles: ${(renderer.info.render.triangles)}</p>
+    </div>
+  `;
   renderer.render(scene, camera.camera);
 }
 
