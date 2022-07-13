@@ -3,9 +3,11 @@ import './style.css'
 import * as THREE from 'three';
 import { scene, camera } from './src/scene';
 import { MapControls } from 'three/examples/jsm/controls/OrbitControls';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 let controls;
+let statistics;
 
 const stats = document.getElementById('stats');
 
@@ -30,6 +32,11 @@ async function init() {
 
   // add orbit controls
   controls = new MapControls(camera.camera, renderer.domElement);
+
+  // stats
+  statistics = new Stats();
+  statistics.dom.id = 'statistics';
+  document.body.appendChild(statistics.dom);
   
   // add ambient light 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -62,7 +69,9 @@ function animate() {
       <p>Triangles: ${(renderer.info.render.triangles)}</p>
     </div>
   `;
+  statistics.begin();
   renderer.render(scene, camera.camera);
+  statistics.end();
 }
 
 init();

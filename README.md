@@ -1,5 +1,5 @@
-# threejs-fbx-review
-An FBX model review tool written in three js to easily inspect multiple fbx models in a scene.
+# threejs-fbx-preview
+An FBX model preview tool written in three js to easily inspect multiple fbx models in a scene.
 
 ## Getting Started
 - Installing VS Code and NPM
