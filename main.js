@@ -143,7 +143,7 @@ async function init() {
   ambientLightFolder.addColor(propsAmbientLight, 'Color').onChange(function (value) {
     ambientLight.color.setHex(value);
   });
-  directionalLightFolder.add(propsDirectionalLight, 'Intensity', 0, 1).step(0.01);
+  directionalLightFolder.add(propsDirectionalLight, 'Intensity', 0, 5).step(0.01);
   directionalLightFolder.addColor(propsDirectionalLight, 'Color').onChange(function (value) {
     lighting.directionalLight.color.setHex(value);
   });

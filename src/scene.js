@@ -18,10 +18,10 @@ function addModels(sceneObjects, scene) {
             resourceURL: fbxModels[key].file,
         }, scene);
         sceneObjects[key] = model;
-        x += 5;
-        if (x > 20) {
+        x += 10;
+        if (x > 30) {
             x = 0;
-            z += 5;
+            z += 10;
         }
     }
 }

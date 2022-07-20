@@ -35,13 +35,13 @@ class FBXModel {
             //         // switch the material here - you'll need to take the settings from the 
             //         //original material, or create your own new settings, something like:
             //         const oldMat = child.material;
-
+                    
             //         child.material = new THREE.MeshPhongMaterial({
-            //             color: 0xf00000,
+            //             color: oldMat.color,
             //             map: oldMat.map,
             //             //etc
             //         });
-
+            //         console.log(child.material);
             //     }
             // });
 
