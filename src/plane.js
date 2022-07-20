@@ -12,6 +12,7 @@ class Plane {
         const geometry = new THREE.PlaneGeometry(this.dimension.x, this.dimension.y);
         const material = new THREE.MeshPhongMaterial({ color: this.color, side: THREE.DoubleSide, transparent: true });
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.position.set(this.position.x, this.position.y, this.position.z);
         this.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
         this.mesh.name = 'plane';
         this.mesh.receiveShadow = true;

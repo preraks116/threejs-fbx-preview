@@ -12,7 +12,8 @@ class OrthoCamera {
         this.height = props.height;
         this.near = props.near;
         this.far = props.far;
-        this.frustumSize = 100;
+        this.zoom = props.zoom;
+        this.frustumSize = props.frustumSize;
         this.aspect = this.width / this.height;
         this.camera = new THREE.OrthographicCamera(this.width / - 2, this.width / 2, this.height / 2, this.height / - 2, this.near, this.far);
         // this.camera = new THREE.OrthographicCamera(this.left, this.right, this.top, this.bottom, this.near, this.far);
@@ -24,7 +25,7 @@ class OrthoCamera {
         this.camera.rotation.y = this.rotation.y;
         this.camera.rotation.x = this.rotation.x;
         this.camera.lookAt(this.lookAt);
-        this.camera.zoom = 1.5;
+        this.camera.zoom = this.zoom;
         this.camera.updateProjectionMatrix();
         this.camera.up = this.up;
         this.scene.add(this.camera);

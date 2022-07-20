@@ -20,7 +20,7 @@ function enableShadows(object) {
 class FBXModel {
     constructor(props, scene) {
         this.position = props.position;
-        this.scale = props.scale;
+        this.scale = props.scale ? props.scale : { x: 1, y: 1, z: 1 };
         this.scene = scene;
         this.resourceURL = props.resourceURL;
 

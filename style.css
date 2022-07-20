@@ -28,10 +28,12 @@ body {
   font-family: 'Courier New', Courier, monospace;
   color: white;
   position: absolute;
-  height: 70px;
+  height: 50px;
   width: 200px;
   bottom: 0%;
   left: 0%;
+  text-align: center;
+  padding-top: 15px;
   /* width: 100%; */
   /* height: 100%; */
   background: black;
@@ -39,8 +41,59 @@ body {
   /* z-index: -1; */
 }
 
-#stats p {
-  position: relative;
-  top: 17px;
-  left: 20px;
+#upload {
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  position: absolute;
+  height: 70px;
+  width: 200px;
+  bottom: 0%;
+  right: 0%;
+  background: transparent;
+}
+
+#upload h5 {
+  background: black;
+  border: 1px solid white;
+  padding: 5px;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: -43vw;
+}
+
+#upload label {
+  font-size: 20px;
+  background: black;
+  position: absolute;
+  top: -40px;
+  left: 22.9%;
+  border: 1px solid white;
+  padding: 10px;
+}
+
+#scale {
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  text-align: center;
+  position: absolute;
+  height: 30px;
+  border: 1px solid white;
+  width: 152px;
+  bottom: 50%;
+  right: 0%;
+  background: black;
+}
+
+#submit {
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  text-align: center;
+  position: absolute;
+  height: 36px;
+  border: 1px solid white;
+  width: 153px;
+  bottom: 0%;
+  right: 0%;
+  background: black;
 }

@@ -9,12 +9,18 @@
   <body>
     <div id="app"></div>
     <div id="gui_container"></div>
-    <div id="stats">
-      <!-- <p>draw calls:</p>
-      <p>triangles:</p>
-      <p>frame: </p> -->
-      <p></p>
-    </div>
+    <div id="stats"></div>
+    <!-- <div id="upload">
+      <input type="file" name="file" id="file" style="display: none;">
+      <label for="file" id="file">Upload File</label>
+    </div> -->
+    <form id="upload">
+      <h5 id="name">No file selected</h5>
+      <input type="file" name="file" id="file" style="display: none;">
+      <label for="file" id="file">Upload File</label>
+      <input type="text" name="scale" id="scale" placeholder="Scale">
+      <input type="submit" id="submit" value="Submit">
+    </form>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

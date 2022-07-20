@@ -1,17 +1,39 @@
 import './style.css'
 
 import * as THREE from 'three';
-import { scene, camera } from './src/scene';
+import { scene, camera, addModel, sceneObjects } from './src/scene';
 import { MapControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-let controls;
-let statistics;
-let gui;
-
 const stats = document.getElementById('stats');
+const form = document.getElementById('upload');
+const name = document.getElementById('name');
+const scale = document.getElementById('scale');
+const upload = document.getElementById('file');
+
+let controls, statistics, gui;
+let uploadURL = '';
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+  // check if scale.value or uploadURL are empty and prevent submission
+  if (scale.value === '' || scale.value === '0') {
+    scale.value = 1;
+  }
+  if (uploadURL !== '') {
+    addModel(uploadURL, scale.value);
+  }
+  else {
+    alert('Please enter a scale and upload a file');
+  }
+});
+
+upload.addEventListener('change', function (event) {
+  uploadURL = URL.createObjectURL(event.target.files[0]);
+  name.innerHTML = event.target.files[0].name;
+});
 
 function onWindowResize() {
   let width = window.innerWidth / 100;
@@ -34,12 +56,11 @@ async function init() {
 
   // add orbit controls
   controls = new MapControls(camera.camera, renderer.domElement);
-
   // stats
   statistics = new Stats();
   statistics.dom.id = 'statistics';
   document.body.appendChild(statistics.dom);
-  
+
   // add ambient light 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
@@ -58,13 +79,13 @@ async function init() {
   directionalLight.shadow.mapSize.height = 2048;
   scene.add(directionalLight);
 
-  const helper = new THREE.DirectionalLightHelper( directionalLight, 1, 0xf00000 );
-  scene.add( helper );
+  const helper = new THREE.DirectionalLightHelper(directionalLight, 1, 0xf00000);
+  scene.add(helper);
 
   gui = new GUI({ autoPlace: false });
   gui.domElement.id = 'gui';
   gui_container.appendChild(gui.domElement);
-
+  
   const lightingFolder = gui.addFolder('Lighting');
   const directionalLightFolder = lightingFolder.addFolder('Directional Light');
   const directionalLightPositionFolder = directionalLightFolder.addFolder('Position');
@@ -138,7 +159,6 @@ async function init() {
       directionalLight.rotation.z = value;
     }
   }
-
   ambientLightFolder.add(propsAmbientLight, 'Intensity', 0, 1).step(0.01);
   ambientLightFolder.addColor(propsAmbientLight, 'Color').onChange(function (value) {
     ambientLight.color.setHex(value);
@@ -171,6 +191,9 @@ async function init() {
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
+  if(sceneObjects['model']) {
+    console.log(sceneObjects['model']);
+  }
   // console.log(renderer.info);
   // add the renderer.info stats to the page
   stats.innerHTML = `
