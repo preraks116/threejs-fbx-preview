@@ -201,9 +201,9 @@ async function init() {
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  if(sceneObjects['model']) {
-    console.log(sceneObjects['model']);
-  }
+  // if(sceneObjects['model']) {
+  //   console.log(sceneObjects['model']);
+  // }
   // console.log(renderer.info);
   // add the renderer.info stats to the page
   stats.innerHTML = `

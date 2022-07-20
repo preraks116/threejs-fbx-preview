@@ -24,7 +24,7 @@ const sceneObjects = {
 
 function addModel(url, scale) {
     if(sceneObjects['model']) {
-        console.log(sceneObjects['model']);
+        // console.log(sceneObjects['model']);
         scene.remove(sceneObjects['model'].model);
         delete sceneObjects['model'];
     }
