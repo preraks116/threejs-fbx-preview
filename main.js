@@ -85,7 +85,6 @@ async function init() {
   gui = new GUI({ autoPlace: false });
   gui.domElement.id = 'gui';
   gui_container.appendChild(gui.domElement);
-  
   const lightingFolder = gui.addFolder('Lighting');
   const directionalLightFolder = lightingFolder.addFolder('Directional Light');
   const directionalLightPositionFolder = directionalLightFolder.addFolder('Position');
@@ -159,6 +158,22 @@ async function init() {
       directionalLight.rotation.z = value;
     }
   }
+  const propsDirectionalLightHelper = {
+    get 'Helper'() {
+      return helper.visible;
+    },
+    set 'Helper'(value) {
+      helper.visible = value;
+    }
+  }
+  const propsDirectionalLightShadow = {
+    get 'Enabled'() {
+      return directionalLight.castShadow;
+    },
+    set 'Enabled'(value) {
+      directionalLight.castShadow = value;
+    }
+  }
   ambientLightFolder.add(propsAmbientLight, 'Intensity', 0, 1).step(0.01);
   ambientLightFolder.addColor(propsAmbientLight, 'Color').onChange(function (value) {
     ambientLight.color.setHex(value);
@@ -167,23 +182,18 @@ async function init() {
   directionalLightFolder.addColor(propsDirectionalLight, 'Color').onChange(function (value) {
     lighting.directionalLight.color.setHex(value);
   });
+  directionalLightFolder.add(propsDirectionalLightHelper, 'Helper').onChange(function (value) {
+    helper.visible = value;
+  });
+  directionalLightFolder.add(propsDirectionalLightShadow, 'Enabled').onChange(function (value) {
+    directionalLight.castShadow = value;
+  });
   directionalLightPositionFolder.add(propsDirectionalLightPosition, 'X', -100, 100).step(0.01);
   directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Y', -100, 100).step(0.01);
   directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Z', -100, 100).step(0.01);
   directionLightRotationFolder.add(propsDirectionalLightRotation, 'X', -Math.PI, Math.PI).step(0.01);
   directionLightRotationFolder.add(propsDirectionalLightRotation, 'Y', -Math.PI, Math.PI).step(0.01);
   directionLightRotationFolder.add(propsDirectionalLightRotation, 'Z', -Math.PI, Math.PI).step(0.01);
-
-  // add spot light
-  // const spotLight = new THREE.SpotLight(0xffffff, 0.5);
-  // spotLight.position.set(0, 10, 10);
-  // spotLight.castShadow = true;
-  // spotLight.shadow.camera.near = 0.1;
-  // spotLight.shadow.camera.far = 100;
-  // scene.add(spotLight);  
-
-  const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.3);
-  // scene.add(hemisphereLight);
 
   window.addEventListener('resize', onWindowResize);
 }
