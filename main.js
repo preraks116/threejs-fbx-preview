@@ -14,7 +14,32 @@ const scale = document.getElementById('scale');
 const upload = document.getElementById('file');
 
 let controls, statistics, gui;
+let modelFolder;
 let uploadURL = '';
+
+function setWireframe(model, value) {
+  for(let i = 0; i < model.children.length; i++) {
+    let child = model.children[i];
+    if(child.isMesh) {
+      child.material.wireframe = value;
+    }
+    else {
+      setWireframe(child, value);
+    }
+  }
+}
+
+function getWireframe(model) {
+  for(let i = 0; i < model.children.length; i++) {
+    let child = model.children[i];
+    if(child.isMesh) {
+      return child.material.wireframe;
+    }
+    else {
+      return getWireframe(child);
+    }
+  }
+}
 
 form.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -23,7 +48,50 @@ form.addEventListener('submit', function (event) {
     scale.value = 1;
   }
   if (uploadURL !== '') {
+    if(sceneObjects['model']) {
+      scene.remove(sceneObjects['model'].model);
+      delete sceneObjects['model'];
+      modelFolder.destroy();
+    }
     addModel(uploadURL, scale.value);
+    // wait for 2 seconds
+    setTimeout(() => {
+      let model = scene.getObjectByName('model');
+      modelFolder = gui.addFolder('Model');
+      let modelRotationFolder = modelFolder.addFolder('Rotation');
+      let rotationprops = {
+        get 'X'() {
+          return model.rotation.x;
+        },
+        set 'X'(value) {
+          model.rotation.x = value;
+        },
+        get 'Y'() {
+          return model.rotation.y;
+        },
+        set 'Y'(value) {
+          model.rotation.y = value;
+        },
+        get 'Z'() {
+          return model.rotation.z;
+        },
+        set 'Z'(value) {
+          model.rotation.z = value;
+        }
+      }
+      let wireframeProps = {
+        get 'wireframe'() {
+          return getWireframe(model);
+        },
+        set 'wireframe'(value) {
+          setWireframe(model, value);
+        }
+      }
+      modelFolder.add(wireframeProps, 'wireframe');
+      modelRotationFolder.add(rotationprops, 'X', -Math.PI, Math.PI);
+      modelRotationFolder.add(rotationprops, 'Y', -Math.PI, Math.PI);
+      modelRotationFolder.add(rotationprops, 'Z', -Math.PI, Math.PI);
+    }, 2000);
   }
   else {
     alert('Please enter a scale and upload a file');
@@ -167,10 +235,10 @@ async function init() {
     }
   }
   const propsDirectionalLightShadow = {
-    get 'Enabled'() {
+    get 'Shadows'() {
       return directionalLight.castShadow;
     },
-    set 'Enabled'(value) {
+    set 'Shadows'(value) {
       directionalLight.castShadow = value;
     }
   }
@@ -185,7 +253,7 @@ async function init() {
   directionalLightFolder.add(propsDirectionalLightHelper, 'Helper').onChange(function (value) {
     helper.visible = value;
   });
-  directionalLightFolder.add(propsDirectionalLightShadow, 'Enabled').onChange(function (value) {
+  directionalLightFolder.add(propsDirectionalLightShadow, 'Shadows').onChange(function (value) {
     directionalLight.castShadow = value;
   });
   directionalLightPositionFolder.add(propsDirectionalLightPosition, 'X', -100, 100).step(0.01);

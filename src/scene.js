@@ -23,11 +23,6 @@ const sceneObjects = {
 
 
 function addModel(url, scale) {
-    if(sceneObjects['model']) {
-        // console.log(sceneObjects['model']);
-        scene.remove(sceneObjects['model'].model);
-        delete sceneObjects['model'];
-    }
     let model = new FBXModel({
         position: { x: 0, y: 0, z: 0 },
         scale: { x: scale, y: scale, z: scale },

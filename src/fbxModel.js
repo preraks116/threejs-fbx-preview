@@ -17,6 +17,21 @@ function enableShadows(object) {
     }
 }
 
+function setMaterial(object) {
+    object.traverse(function (child) {
+        if(child.isMesh) {
+            const oldMat = child.material;
+            child.material = new THREE.MeshPhongMaterial({
+                color: oldMat.color,
+                map: oldMat.map,
+            });
+        }
+        else {
+            setMaterial(child);
+        }
+    });
+}
+
 class FBXModel {
     constructor(props, scene) {
         this.position = props.position;
@@ -27,39 +42,40 @@ class FBXModel {
         // wait for the fbxLoader to load the model
         // following function is called when the model is loaded
         fbxLoader.load(this.resourceURL, (fbx) => {
+            // setMaterial(fbx);
+            fbx.traverse(function (child) {
 
-            // fbx.traverse(function (child) {
+                if (child.isMesh) {
 
-            //     if (child.isMesh) {
+                    // switch the material here - you'll need to take the settings from the 
+                    //original material, or create your own new settings, something like:
+                    const oldMat = child.material;
 
-            //         // switch the material here - you'll need to take the settings from the 
-            //         //original material, or create your own new settings, something like:
-            //         const oldMat = child.material;
-                    
-            //         child.material = new THREE.MeshPhongMaterial({
-            //             color: oldMat.color,
-            //             map: oldMat.map,
-            //             //etc
-            //         });
-            //         console.log(child.material);
-            //     }
-            // });
-
-                // threejs rendering
-                this.isLoaded = true;
-                // the loaded model
-                this.model = fbx;
-                // set the position and scale
-                this.model.position.set(this.position.x, this.position.y, this.position.z);
-                this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
-                // this.model.rotation.x = - Math.PI / 2;   
-                // add the model to the scene
-                this.model.receiveShadow = true;
-                this.model.castShadow = true;
-                enableShadows(this.model);
-
-                this.scene.add(this.model);
+                    child.material = new THREE.MeshPhongMaterial({
+                        color: oldMat.color,
+                        map: oldMat.map,
+                        //etc
+                    });
+                    // console.log(child.material);
+                }
             });
-        }
+
+            // threejs rendering
+            this.isLoaded = true;
+            // the loaded model
+            this.model = fbx;
+            this.model.name = 'model';
+            // set the position and scale
+            this.model.position.set(this.position.x, this.position.y, this.position.z);
+            this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
+            // this.model.rotation.x = - Math.PI / 2;   
+            // add the model to the scene
+            this.model.receiveShadow = true;
+            this.model.castShadow = true;
+            enableShadows(this.model);
+
+            this.scene.add(this.model);
+        });
+    }
 }
 export { FBXModel };
