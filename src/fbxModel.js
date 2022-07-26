@@ -18,18 +18,21 @@ function enableShadows(object) {
 }
 
 function setMaterial(object) {
-    object.traverse(function (child) {
+    // console.log(object.children);
+    for(let i = 0; i < object.children.length; i++) {
+        let child = object.children[i];
         if(child.isMesh) {
             const oldMat = child.material;
             child.material = new THREE.MeshPhongMaterial({
                 color: oldMat.color,
                 map: oldMat.map,
+                //etc
             });
         }
         else {
             setMaterial(child);
         }
-    });
+    }
 }
 
 class FBXModel {
@@ -42,23 +45,7 @@ class FBXModel {
         // wait for the fbxLoader to load the model
         // following function is called when the model is loaded
         fbxLoader.load(this.resourceURL, (fbx) => {
-            // setMaterial(fbx);
-            fbx.traverse(function (child) {
-
-                if (child.isMesh) {
-
-                    // switch the material here - you'll need to take the settings from the 
-                    //original material, or create your own new settings, something like:
-                    const oldMat = child.material;
-
-                    child.material = new THREE.MeshPhongMaterial({
-                        color: oldMat.color,
-                        map: oldMat.map,
-                        //etc
-                    });
-                    // console.log(child.material);
-                }
-            });
+            setMaterial(fbx);
 
             // threejs rendering
             this.isLoaded = true;
